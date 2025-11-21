@@ -24,6 +24,9 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/index.js ./index.js
 
+# Create a directory for persistent data
+VOLUME /data
+
 # Expose the port and run the application
 EXPOSE 3000
 CMD [ "npm", "start" ]

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+</head>
+<body>
+    <h1>User Management</h1>
+
+    <h2>Add User</h2>
+    <form id="addUserForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <button type="submit">Add User</button>
+    </form>
+
+    <h2>Users</h2>
+    <button id="getUsersBtn">Get Users</button>
+    <ul id="userList"></ul>
+
+    <script>
+        const addUserForm = document.getElementById('addUserForm');
+        const getUsersBtn = document.getElementById('getUsersBtn');
+        const userList = document.getElementById('userList');
+
+        addUserForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = e.target.elements.username.value;
+            try {
+                const response = await fetch('http://backend:3000/user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username })
+                });
+                const newUser = await response.json();
+                alert(`User added: ${newUser.username}`);
+                e.target.reset();
+            } catch (error) {
+                console.error('Error adding user:', error);
+                alert('Error adding user');
+            }
+        });
+
+        getUsersBtn.addEventListener('click', async () => {
+            try {
+                const response = await fetch('http://backend:3000/users');
+                const users = await response.json();
+                userList.innerHTML = '';
+                users.forEach(user => {
+                    const li = document.createElement('li');
+                    li.textContent = user.username;
+                    userList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error fetching users:', error);
+                alert('Error fetching users');
+            }
+        });
+    </script>
+</body>
+</html>
