@@ -28,7 +28,7 @@
             e.preventDefault();
             const username = e.target.elements.username.value;
             try {
-                const response = await fetch('http://backend:3000/user', {
+                const response = await fetch('http://localhost:9000/user', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -46,7 +46,7 @@
 
         getUsersBtn.addEventListener('click', async () => {
             try {
-                const response = await fetch('http://backend:3000/users');
+                const response = await fetch('http://localhost:9000/users');
                 const users = await response.json();
                 userList.innerHTML = '';
                 users.forEach(user => {
